@@ -14,6 +14,7 @@ What will docker-compose contain?
 - Vault: `a tool for securely accessing secrets`
 - Code: `online vscode`
 - Application: `a cross-platform native application of your webshop`
+- Graphviz: `a tool for visualizing the architecture of docker-compose stack`
 
 
 # CLI
@@ -21,7 +22,12 @@ What will docker-compose contain?
 ## Generate Docker Compose File
 
 ```bash
-python -m cli gen-dc test
+cargo run --release -- docker-compose \
+  --site-title mydemowebsite \
+  --site-url mydemowebsite.com \
+  --site-profile dev
+```
+
 ```
 
 # API (Swagger)
@@ -35,12 +41,14 @@ cd /tmp/test
 
 
 ```bash
-curl -X 'POST' \
-  'http://localhost:5000/docker-compose' \
+curl -X 'GET' \
+  'http://localhost:8888/dc' \
   -H 'accept: application/json' \
   -H 'Content-Type: text/plain' \
-  -d 'SITE_TITLE=mydemowebsite \
-SITE_URL=mydemowebsite.com
-SITE_PROFILE=dev
+    -d '{
+    "site_title": "mydemowebsite",
+    "site_url": "mydemowebsite.com",
+    "site_profile": "dev"
+}'
 ' >> docker-compose.yml
 ```
