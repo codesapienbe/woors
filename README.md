@@ -1,5 +1,7 @@
 # WooRS
 
+## Introduction
+
 ![woors](https://raw.githubusercontent.com/codesapienbe/woors/main/logo.svg)
 
 ## What does this application do for your website?
@@ -17,7 +19,7 @@ What will docker-compose contain?
 - Graphviz: `a tool for visualizing the architecture of docker-compose stack`
 
 
-# CLI
+## CLI
 
 ## Generate Docker Compose File
 
@@ -28,11 +30,9 @@ cargo run --release -- docker-compose \
   --site-profile dev
 ```
 
-```
+## API (Actix Web)
 
-# API (Swagger)
-
-## Generate Docker Compose File for testing purposes 
+### Generate Docker Compose File for testing purposes 
 
 ```bash
 mkdir -p /tmp/test
