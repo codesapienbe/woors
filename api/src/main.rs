@@ -71,113 +71,134 @@ pub fn parse_compose(compose: Compose) -> String {
     compose_str.push_str(&compose.version.unwrap());
     compose_str.push_str("\n");
 
-    compose_str.push_str("services:\n");
-    for service in compose.services {
-        compose_str.push_str("  ");
-        compose_str.push_str(&service.container_name);
-        compose_str.push_str(":\n");
-        compose_str.push_str("    image: ");
-        compose_str.push_str(&service.image);
+    if compose.services.len() > 0 {
         compose_str.push_str("\n");
-        compose_str.push_str("    container_name: ");
-        compose_str.push_str(&service.container_name);
         compose_str.push_str("\n");
-
-        compose_str.push_str("    ports:\n");
-        if service.ports.len() > 0 {
-            for port in service.ports {
-                compose_str.push_str("      - ");
-                compose_str.push_str(&port.host);
-                compose_str.push_str(":");
-                compose_str.push_str(&port.container);
-                compose_str.push_str("\n");
-            }
-        }
-
-        compose_str.push_str("    volumes:\n");
-    
-        if service.volumes.len() > 0 {
-            for volume in service.volumes {
-                compose_str.push_str("      - ");
-                compose_str.push_str(&volume.title);
-                compose_str.push_str(":");
-                compose_str.push_str(&volume.driver);
-                compose_str.push_str("\n");
-            }
-        }
-
-        if service.depends_on.len() > 0 {
-            compose_str.push_str("    depends_on:\n");
-            for dependency in service.depends_on {
-                compose_str.push_str("      - ");
-                compose_str.push_str(&dependency.service);
-                compose_str.push_str("\n");
-            }
-        }
-
-        if service.restart.condition.len() > 0 {
-            compose_str.push_str("    restart: ");
-            compose_str.push_str(&service.restart.condition);
+        compose_str.push_str("services:\n");
+        for service in compose.services {
             compose_str.push_str("\n");
-        }
-
-        if service.command.value.len() > 0 {
-            compose_str.push_str("    command: ");
-            compose_str.push_str(&service.command.value);
+            compose_str.push_str("  ");
+            compose_str.push_str(&service.container_name);
+            compose_str.push_str(":\n");
+            compose_str.push_str("    image: ");
+            compose_str.push_str(&service.image);
             compose_str.push_str("\n");
-        }
+            compose_str.push_str("    container_name: ");
+            compose_str.push_str(&service.container_name);
+            compose_str.push_str("\n");
 
-        if service.labels.len() > 0 {
-            compose_str.push_str("    labels:\n");
-            for label in service.labels {
-                compose_str.push_str("      - ");
-                compose_str.push_str(&label.key);
-                compose_str.push_str("=");
-                compose_str.push_str(&label.value);
+            if service.ports.len() > 0 {
+                compose_str.push_str("\n");
+                compose_str.push_str("    ports:\n");
+                for port in service.ports {
+                    compose_str.push_str("      - ");
+                    compose_str.push_str(&port.host);
+                    compose_str.push_str(":");
+                    compose_str.push_str(&port.container);
+                    compose_str.push_str("\n");
+                }
+            }
+
+        
+            if service.volumes.len() > 0 {
+                compose_str.push_str("\n");
+                compose_str.push_str("    volumes:\n");
+                for volume in service.volumes {
+                    compose_str.push_str("      - ");
+                    compose_str.push_str(&volume.title);
+                    compose_str.push_str(":");
+                    compose_str.push_str(&volume.driver);
+                    compose_str.push_str("\n");
+                }
+            }
+
+            if service.depends_on.len() > 0 {
+                compose_str.push_str("\n");
+                compose_str.push_str("    depends_on:\n");
+                for dependency in service.depends_on {
+                    compose_str.push_str("      - ");
+                    compose_str.push_str(&dependency.service);
+                    compose_str.push_str("\n");
+                }
+            }
+
+            if service.restart.condition.len() > 0 {
+                compose_str.push_str("\n");
+                compose_str.push_str("    restart: ");
+                compose_str.push_str(&service.restart.condition);
                 compose_str.push_str("\n");
             }
-        }
 
-        if service.environments.len() > 0 {
-            compose_str.push_str("    environment:\n");
-            for environment in service.environments {
-                compose_str.push_str("      - ");
-                compose_str.push_str(&environment.title);
-                compose_str.push_str("=");
-                compose_str.push_str(&environment.value);
+            if service.command.value.len() > 0 {
+                compose_str.push_str("\n");
+                compose_str.push_str("    command: ");
+                compose_str.push_str(&service.command.value);
                 compose_str.push_str("\n");
             }
-        }
 
-        if service.networks.len() > 0 {
-            compose_str.push_str("    networks:\n");
-            for network in service.networks {
-                compose_str.push_str("      - ");
-                compose_str.push_str(&network.driver);
+            if service.labels.len() > 0 {
                 compose_str.push_str("\n");
+                compose_str.push_str("    labels:\n");
+                for label in service.labels {
+                    compose_str.push_str("      - ");
+                    compose_str.push_str(&label.key);
+                    compose_str.push_str("=");
+                    compose_str.push_str(&label.value);
+                    compose_str.push_str("\n");
+                }
             }
-        }
 
+            if service.environments.len() > 0 {
+                compose_str.push_str("\n");
+                compose_str.push_str("    environments:\n");
+                for environment in service.environments {
+                    compose_str.push_str("      - ");
+                    compose_str.push_str(&environment.title);
+                    compose_str.push_str("=");
+                    compose_str.push_str(&environment.value);
+                    compose_str.push_str("\n");
+                }
+            }
+
+            if service.networks.len() > 0 {
+                compose_str.push_str("\n");
+                compose_str.push_str("    networks:\n");
+                for network in service.networks {
+                    compose_str.push_str("      - ");
+                    compose_str.push_str(&network.driver);
+                    compose_str.push_str("\n");
+                }
+            }
+
+        }
     }
 
-    compose_str.push_str("volumes:\n");
-    compose_str.push_str("  ");
-    for volume in compose.volumes {
-        compose_str.push_str(&volume.title);
-        compose_str.push_str(":\n");
-        compose_str.push_str("    driver: ");
-        compose_str.push_str(&volume.driver);
+    if compose.volumes.len() > 0 {
         compose_str.push_str("\n");
+        compose_str.push_str("\n");
+        compose_str.push_str("volumes:\n");
+        for volume in compose.volumes {
+            compose_str.push_str("  ");
+            compose_str.push_str(&volume.title);
+            compose_str.push_str(":\n");
+            compose_str.push_str("    driver: ");
+            compose_str.push_str(&volume.driver);
+            compose_str.push_str("\n");
+        }
     }
 
-    compose_str.push_str("networks:\n");
-    compose_str.push_str("  ");
-    for network in compose.networks {
-        compose_str.push_str(&network.driver);
-        compose_str.push_str(":\n");
-        compose_str.push_str("    external: ");
-        compose_str.push_str(&network.external.to_string());
+    if compose.networks.len() > 0 {
         compose_str.push_str("\n");
+        compose_str.push_str("\n");
+        compose_str.push_str("networks:\n");
+        for network in compose.networks {
+            compose_str.push_str("  ");
+            compose_str.push_str(&network.driver);
+            compose_str.push_str(":\n");
+            compose_str.push_str("    external: ");
+            compose_str.push_str(&network.external.to_string());
+            compose_str.push_str("\n");
+        }
     }
 
     compose_str
